@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}{{ form_title }} - StudentHub{% endblock %}
+
+{% block content %}
+<div class="page-header" style="max-width: 680px; margin-left: auto; margin-right: auto;">
+    <div class="page-title-group">
+        <a href="{{ url_for('students') }}" style="color: var(--primary); text-decoration: none; font-weight: 600; font-size: 0.875rem; display: inline-flex; align-items: center; gap: 4px; margin-bottom: 0.5rem;">
+            &larr; Back to Students Directory
+        </a>
+        <h1>{{ form_title }}</h1>
+        <p class="page-subtitle">Fill in the details below to {% if student %}update the student profile{% else %}register a new student{% endif %}.</p>
+    </div>
+</div>
+
+<div class="form-card">
+    <form method="POST">
+        <div class="form-grid">
+            
+            <!-- Full Name -->
+            <div class="form-group-full">
+                <label class="form-label" for="name">
+                    Full Name <span>*</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="name" 
+                    name="name" 
+                    value="{{ student.name if student else '' }}" 
+                    class="form-control" 
+                    placeholder="e.g. Rahul Sharma"
+                    required
+                >
+            </div>
+
+            <!-- Email Address -->
+            <div>
+                <label class="form-label" for="email">
+                    Email Address <span>*</span>
+                </label>
+                <input 
+                    type="email" 
+                    id="email" 
+                    name="email" 
+                    value="{{ student.email if student else '' }}" 
+                    class="form-control" 
+                    placeholder="e.g. rahul@example.com"
+                    required
+                >
+            </div>
+
+            <!-- Phone Number -->
+            <div>
+                <label class="form-label" for="phone">
+                    Phone Number
+                </label>
+                <input 
+                    type="tel" 
+                    id="phone" 
+                    name="phone" 
+                    value="{{ student.phone if student else '' }}" 
+                    class="form-control" 
+                    placeholder="e.g. 9876543210"
+                >
+            </div>
+
+            <!-- Gender -->
+            <div>
+                <label class="form-label" for="gender">
+                    Gender
+                </label>
+                <select id="gender" name="gender" class="form-control form-select">
+                    <option value="Male" {% if student and student.gender == "Male" %}selected{% endif %}>Male</option>
+                    <option value="Female" {% if student and student.gender == "Female" %}selected{% endif %}>Female</option>
+                    <option value="Other" {% if student and student.gender == "Other" %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+
+            <!-- Course -->
+            <div>
+                <label class="form-label" for="course_id">
+                    Academic Course <span>*</span>
+                </label>
+                <select id="course_id" name="course_id" class="form-control form-select" required>
+                    <option value="">-- Select Course --</option>
+                    {% for course in courses %}
+                    <option value="{{ course.id }}" {% if student and student.course_id == course.id %}selected{% endif %}>
+                        {{ course.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Date of Birth -->
+            <div>
+                <label class="form-label" for="date_of_birth">
+                    Date of Birth
+                </label>
+                <input 
+                    type="date" 
+                    id="date_of_birth" 
+                    name="date_of_birth" 
+                    value="{{ student.date_of_birth if student else '' }}" 
+                    class="form-control"
+                >
+            </div>
+
+            <!-- Status -->
+            <div>
+                <label class="form-label" for="status">
+                    Enrollment Status
+                </label>
+                <select id="status" name="status" class="form-control form-select">
+                    <option value="Active" {% if student and student.status == "Active" %}selected{% endif %}>Active</option>
+                    <option value="Inactive" {% if student and student.status == "Inactive" %}selected{% endif %}>Inactive</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="form-actions">
+            <a href="{{ url_for('students') }}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">
+                {% if student %}
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                    Update Student
+                {% else %}
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                    Save Student
+                {% endif %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

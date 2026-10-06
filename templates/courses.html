@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Courses Overview - StudentHub{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-title-group">
+        <h1>Courses Overview</h1>
+        <p class="page-subtitle">Browse academic programs, enrollment statistics, and student rosters.</p>
+    </div>
+</div>
+
+<div class="courses-grid">
+    {% for course in courses %}
+    <div class="course-card">
+        <div class="course-card-header">
+            <div>
+                <div class="course-name">{{ course.name }}</div>
+                <div style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600; margin-top: 2px;">Program ID: #{{ course.id }}</div>
+            </div>
+            <span class="badge badge-course" style="font-size: 0.85rem; padding: 6px 14px;">
+                {{ course.total_students }} Student{% if course.total_students != 1 %}s{% endif %}
+            </span>
+        </div>
+
+        <div style="margin-top: 1rem;">
+            <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 0.5rem;">
+                Enrolled Students
+            </div>
+            
+            <div class="student-pill-list">
+                {% set students_in_course = course_students.get(course.id, []) %}
+                {% for st in students_in_course %}
+                <div class="student-pill-item">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div class="avatar-initial" style="width: 26px; height: 26px; font-size: 0.75rem;">{{ st.name[0] }}</div>
+                        <span>{{ st.name }}</span>
+                    </div>
+                    {% if st.status == 'Active' %}
+                        <span class="badge badge-active" style="padding: 2px 8px; font-size: 0.7rem;">Active</span>
+                    {% else %}
+                        <span class="badge badge-inactive" style="padding: 2px 8px; font-size: 0.7rem;">Inactive</span>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div style="font-size: 0.875rem; color: var(--text-muted); font-style: italic; padding: 8px 0;">
+                    No students currently enrolled in this program.
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border-color); text-align: right;">
+            <a href="{{ url_for('students', course_id=course.id) }}" class="btn btn-secondary btn-sm" style="width: 100%;">
+                View Students in {{ course.name }} &rarr;
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

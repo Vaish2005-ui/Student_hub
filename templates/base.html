@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="StudentHub - Modern Student Management System">
+    
+    <title>{% block title %}StudentHub - Student Management System{% endblock %}</title>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="navbar">
+        <a href="{{ url_for('dashboard') }}" class="nav-brand">
+            <div class="brand-icon">S</div>
+            <div>
+                <span class="brand-name">StudentHub</span>
+                <span class="brand-tag">v2.0</span>
+            </div>
+        </a>
+
+        <!-- Desktop & Mobile Menu -->
+        <ul class="nav-menu" id="navMenu">
+            <li>
+                <a href="{{ url_for('dashboard') }}" class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                    </svg>
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('students') }}" class="nav-link {% if request.endpoint == 'students' or request.endpoint == 'student_detail' %}active{% endif %}">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                    </svg>
+                    Students Directory
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('courses') }}" class="nav-link {% if request.endpoint == 'courses' %}active{% endif %}">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18c-2.305 0-4.408.867-6 2.292m0-14.25v14.25" />
+                    </svg>
+                    Courses
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('about') }}" class="nav-link {% if request.endpoint == 'about' %}active{% endif %}">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+                    </svg>
+                    About
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('ai_assistant') }}" class="nav-link {% if request.endpoint == 'ai_assistant' %}active{% endif %}">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
+                    </svg>
+                    AI Agent
+                    <span class="nav-badge-ai">AI</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav-actions">
+            <a href="{{ url_for('add_student') }}" class="btn-add-quick">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <span>Add Student</span>
+            </a>
+
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-container">
+        
+        <!-- Flask Flash Notifications -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="toast-container">
+                    {% for category, message in messages %}
+                        <div class="toast toast-{{ 'success' if category == 'success' else 'error' }}">
+                            <span>{{ message }}</span>
+                            <button class="toast-close" aria-label="Close message">&times;</button>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>StudentHub &copy; 2026 &bull; Student Management System &bull; Built with Flask &amp; SQLite</p>
+    </footer>
+
+    <!-- Floating AI Agent Trigger Button -->
+    <button class="ai-floating-trigger" id="aiFloatingTrigger" onclick="toggleAIChat()" aria-label="Open AI Assistant Chat">
+        <span class="ai-trigger-sparkle">🤖</span>
+        <span class="ai-trigger-text">AI Agent</span>
+    </button>
+
+    <!-- Floating AI Agent Drawer Chat -->
+    <div class="ai-chat-drawer" id="aiChatDrawer">
+        <div class="ai-drawer-header">
+            <div class="ai-drawer-title">
+                <span class="ai-avatar-head">🤖</span>
+                <div>
+                    <h4>StudentHub AI Agent</h4>
+                    <span class="ai-status-online">● Online & Ready</span>
+                </div>
+            </div>
+            <button class="ai-drawer-close" onclick="toggleAIChat()">&times;</button>
+        </div>
+
+        <div class="ai-drawer-body" id="drawerChatMessageContainer">
+            <div class="ai-message ai-message-agent">
+                <div class="ai-avatar">🤖</div>
+                <div class="ai-bubble">
+                    Hello! I'm your <strong>StudentHub AI Agent</strong>. Ask me anything about student statistics, inactive records, or course distributions!
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-drawer-quick-prompts">
+            <button onclick="sendDrawerQuickPrompt('How many students are enrolled?')">📊 Total Students</button>
+            <button onclick="sendDrawerQuickPrompt('Show inactive students')">⚠️ Inactive Audit</button>
+            <button onclick="sendDrawerQuickPrompt('Which course is most popular?')">📚 Top Courses</button>
+            <button onclick="sendDrawerQuickPrompt('Who was recently added?')">🆕 Recent Students</button>
+        </div>
+
+        <div class="ai-drawer-footer">
+            <input type="text" id="drawerChatInput" placeholder="Ask AI Agent a question..." onkeypress="handleDrawerKeyPress(event)">
+            <button class="ai-send-btn" onclick="sendDrawerChatMessage()">
+                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 12L3 21l18-9L3 3l3 9zm0 0h7" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

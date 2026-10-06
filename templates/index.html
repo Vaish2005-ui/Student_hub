@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - StudentHub{% endblock %}
+
+{% block content %}
+<div class="card-section" style="background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%); color: white; padding: 3.5rem; border: none; margin-bottom: 2rem;">
+    <span class="badge" style="background: rgba(255,255,255,0.2); color: white; margin-bottom: 1rem; padding: 6px 14px; font-size: 0.85rem;">
+        STUDENT MANAGEMENT SYSTEM
+    </span>
+    <h1 style="font-size: 2.75rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 1rem; color: white;">
+        Manage Students Efficiently &amp; Effortlessly.
+    </h1>
+    <p style="font-size: 1.15rem; max-width: 650px; line-height: 1.6; opacity: 0.95; margin-bottom: 2rem;">
+        Welcome to StudentHub v2.0. Access real-time student directories, course distribution analytics, profile management, and database record controls in one place.
+    </p>
+    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="{{ url_for('dashboard') }}" class="btn" style="background: white; color: #4f46e5; font-weight: 800; padding: 12px 24px;">
+            Go to Dashboard &rarr;
+        </a>
+        <a href="{{ url_for('students') }}" class="btn" style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); font-weight: 700; padding: 12px 24px;">
+            Browse Students
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - StudentHub{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-title-group">
+        <h1>Dashboard</h1>
+        <p class="page-subtitle">Overview of student enrollment, active statuses, and course statistics.</p>
+    </div>
+    <div class="header-actions">
+        <a href="{{ url_for('students') }}" class="btn btn-secondary btn-sm">View All Students</a>
+        <a href="{{ url_for('add_student') }}" class="btn btn-primary btn-sm">+ Add New Student</a>
+    </div>
+</div>
+
+<!-- Stats Grid -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <div class="stat-icon stat-icon-indigo">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                </svg>
+            </div>
+            <span class="badge badge-course">Total</span>
+        </div>
+        <div class="stat-value">{{ total_students }}</div>
+        <div class="stat-label">Total Registered Students</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <div class="stat-icon stat-icon-emerald">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <span class="badge badge-active">Active</span>
+        </div>
+        <div class="stat-value">{{ active_students }}</div>
+        <div class="stat-label">Currently Active Enrolled</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <div class="stat-icon stat-icon-amber">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                </svg>
+            </div>
+            <span class="badge badge-inactive">Inactive</span>
+        </div>
+        <div class="stat-value">{{ inactive_students }}</div>
+        <div class="stat-label">Inactive / Graduated</div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-card-top">
+            <div class="stat-icon stat-icon-cyan">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18c-2.305 0-4.408.867-6 2.292m0-14.25v14.25" />
+                </svg>
+            </div>
+            <span class="badge badge-course">Programs</span>
+        </div>
+        <div class="stat-value">{{ total_courses }}</div>
+        <div class="stat-label">Academic Programs</div>
+    </div>
+</div>
+
+<!-- AI Agent Smart Insights Banner -->
+<div class="ai-insights-card">
+    <div class="ai-insights-header">
+        <div class="ai-badge-group">
+            <span class="ai-icon-pulse">🤖</span>
+            <h3>StudentHub AI Smart Insights</h3>
+            <span class="ai-pill-tag">Live Database Analytics</span>
+        </div>
+        <button class="btn btn-primary btn-sm open-ai-chat-btn" onclick="toggleAIChat()">
+            ✨ Ask AI Agent
+        </button>
+    </div>
+    <div class="ai-insights-grid">
+        {% for insight in ai_insights %}
+        <div class="ai-insight-item ai-insight-{{ insight.type }}">
+            <span class="ai-insight-icon">{{ insight.icon }}</span>
+            <div class="ai-insight-content">
+                <strong>{{ insight.title }}</strong>
+                <p>{{ insight.text | safe }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Main Sections Grid -->
+<div class="dashboard-main-grid">
+    
+    <!-- Recent Students Card -->
+    <div class="card-section" style="margin-bottom: 0;">
+        <div class="section-header">
+            <h2 class="section-title">
+                <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Recently Registered
+            </h2>
+            <a href="{{ url_for('students') }}" class="btn btn-secondary btn-sm">View All &rarr;</a>
+        </div>
+
+        <div class="table-responsive">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Course</th>
+                        <th>Status</th>
+                        <th style="text-align: right;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in recent_students %}
+                    <tr>
+                        <td>
+                            <div class="student-profile-cell">
+                                <div class="avatar-initial">{{ (student.name[:1] if student.name else '?') | upper }}</div>
+                                <div>
+                                    <div class="student-name-text">{{ student.name }}</div>
+                                    <div class="student-email-sub">ID: #{{ student.id }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="badge badge-course">{{ student.course }}</span>
+                        </td>
+                        <td>
+                            {% if student.status == 'Active' %}
+                                <span class="badge badge-active">Active</span>
+                            {% else %}
+                                <span class="badge badge-inactive">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td style="text-align: right;">
+                            <a href="{{ url_for('student_detail', student_id=student.id) }}" class="btn btn-secondary btn-sm" title="View details">
+                                View Profile
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                            No recent students found.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Course Distribution Card -->
+    <div class="card-section" style="margin-bottom: 0;">
+        <div class="section-header">
+            <h2 class="section-title">
+                <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                </svg>
+                Course Distribution
+            </h2>
+            <a href="{{ url_for('courses') }}" class="btn btn-secondary btn-sm">Explore</a>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+            {% for item in course_stats %}
+                {% set pct = (item.total / total_students * 100) if (total_students and total_students > 0) else 0 %}
+                <div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem; font-weight: 700; margin-bottom: 4px;">
+                        <span>{{ item.course }}</span>
+                        <span style="color: var(--text-muted);">{{ item.total }} students ({{ "%.0f"|format(pct) }}%)</span>
+                    </div>
+                    <div class="progress-bar-wrap">
+                        <div class="progress-bar-fill" style="--progress-width: {{ pct }}%; width: var(--progress-width);"></div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

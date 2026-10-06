@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}About - StudentHub{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-title-group">
+        <h1>About StudentHub</h1>
+        <p class="page-subtitle">A modern, lightweight student management platform built with Python &amp; Flask.</p>
+    </div>
+</div>
+
+<div class="card-section" style="margin-bottom: 2rem;">
+    <div style="max-width: 800px;">
+        <h2 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 1rem; color: var(--text-main);">
+            Empowering Educational Administration
+        </h2>
+        <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 1.5rem;">
+            StudentHub is designed to streamline academic operations by providing an intuitive dashboard, fast student directory filtering, profile management, course tracking, and RESTful API endpoints.
+        </p>
+    </div>
+</div>
+
+<!-- Features Grid -->
+<div class="stats-grid" style="margin-bottom: 2rem;">
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-indigo" style="margin-bottom: 1rem;">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+        </div>
+        <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">Fast &amp; Responsive</div>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">Built on lightweight Flask with instant sqlite parameter query execution for zero latency navigation.</p>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-emerald" style="margin-bottom: 1rem;">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+        </div>
+        <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">Data Integrity</div>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">SQLite foreign key constraints and transactional integrity guarantee consistent student records.</p>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-amber" style="margin-bottom: 1rem;">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
+            </svg>
+        </div>
+        <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">Visual Analytics</div>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">Live status metrics and course distribution breakdown for administrative decision making.</p>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon stat-icon-cyan" style="margin-bottom: 1rem;">
+            <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+            </svg>
+        </div>
+        <div style="font-size: 1.15rem; font-weight: 800; margin-bottom: 0.5rem;">REST API Support</div>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">Built-in JSON endpoint at <code>/api/students</code> for seamless third-party integrations.</p>
+    </div>
+</div>
+
+<!-- Tech Stack Card -->
+<div class="card-section">
+    <div class="section-header">
+        <h2 class="section-title">Technical Specifications</h2>
+    </div>
+
+    <div class="table-responsive">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Technology</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="font-weight: 700;">Backend Framework</td>
+                    <td>Python 3 / Flask Web Application</td>
+                    <td><span class="badge badge-active">Operational</span></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 700;">Database Engine</td>
+                    <td>SQLite 3 Database (PRAGMA Foreign Keys ON)</td>
+                    <td><span class="badge badge-active">Operational ({{ total_students }} records)</span></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 700;">Frontend UI</td>
+                    <td>HTML5, Vanilla CSS Design System, ES6 JavaScript</td>
+                    <td><span class="badge badge-active">v2.0 Modern</span></td>
+                </tr>
+                <tr>
+                    <td style="font-weight: 700;">API Endpoint</td>
+                    <td><a href="{{ url_for('api_students') }}" target="_blank" style="color: var(--primary); font-weight: 600;">/api/students</a></td>
+                    <td><span class="badge badge-course">JSON Format</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

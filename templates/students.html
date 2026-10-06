@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Students Directory - StudentHub{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-title-group">
+        <h1>Students Directory</h1>
+        <p class="page-subtitle">Manage, search, and filter student profiles.</p>
+    </div>
+    <div class="header-actions">
+        <a href="{{ url_for('add_student') }}" class="btn btn-primary">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Add New Student
+        </a>
+    </div>
+</div>
+
+<!-- Search & Filters Bar -->
+<div class="filter-bar">
+    <form method="GET" action="{{ url_for('students') }}" class="filter-form">
+        
+        <!-- Search input -->
+        <div class="search-input-wrap">
+            <svg class="search-icon" width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+            <input 
+                type="text" 
+                name="search" 
+                id="searchInput"
+                value="{{ search }}" 
+                class="form-control" 
+                placeholder="Search by student name, email, or phone..."
+            >
+        </div>
+
+        <!-- Course Filter -->
+        <select name="course_id" class="form-control form-select">
+            <option value="">All Courses</option>
+            {% for course in courses %}
+            <option value="{{ course.id }}" {% if selected_course|string == course.id|string %}selected{% endif %}>
+                {{ course.name }}
+            </option>
+            {% endfor %}
+        </select>
+
+        <!-- Status Filter -->
+        <select name="status" class="form-control form-select">
+            <option value="">All Statuses</option>
+            <option value="Active" {% if selected_status == 'Active' %}selected{% endif %}>Active</option>
+            <option value="Inactive" {% if selected_status == 'Inactive' %}selected{% endif %}>Inactive</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+        
+        {% if search or selected_course or selected_status %}
+        <a href="{{ url_for('students') }}" class="btn btn-secondary btn-sm">Clear Filters</a>
+        {% endif %}
+    </form>
+</div>
+
+<!-- Students List Card Section -->
+<div class="card-section">
+    <div class="section-header">
+        <h2 class="section-title">
+            Enrolled Students 
+            <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted); background: var(--bg-main); padding: 2px 10px; border-radius: var(--radius-full); border: 1px solid var(--border-color);">
+                {{ students|length }} records
+            </span>
+        </h2>
+    </div>
+
+    <div class="table-responsive">
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Student Name &amp; Email</th>
+                    <th>Phone</th>
+                    <th>Gender</th>
+                    <th>Course</th>
+                    <th>Status</th>
+                    <th style="text-align: right;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td style="font-weight: 700; color: var(--text-muted);">#{{ student.id }}</td>
+                    <td>
+                        <div class="student-profile-cell">
+                            <div class="avatar-initial">{{ student.name[0] }}</div>
+                            <div>
+                                <div class="student-name-text">{{ student.name }}</div>
+                                <div class="student-email-sub">{{ student.email }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ student.phone or 'N/A' }}</td>
+                    <td>{{ student.gender or 'N/A' }}</td>
+                    <td>
+                        <span class="badge badge-course">{{ student.course }}</span>
+                    </td>
+                    <td>
+                        {% if student.status == 'Active' %}
+                            <span class="badge badge-active">Active</span>
+                        {% else %}
+                            <span class="badge badge-inactive">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td style="text-align: right;">
+                        <div class="action-buttons" style="justify-content: flex-end;">
+                            <a href="{{ url_for('student_detail', student_id=student.id) }}" class="btn-icon" title="View Details">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                            </a>
+                            <a href="{{ url_for('edit_student', student_id=student.id) }}" class="btn-icon" title="Edit Student">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                </svg>
+                            </a>
+                            <form 
+                                method="POST" 
+                                action="{{ url_for('delete_student', student_id=student.id) }}" 
+                                class="delete-form"
+                                data-student-name="{{ student.name }}"
+                                style="display: inline;"
+                            >
+                                <button type="submit" class="btn-icon btn-icon-danger" title="Delete Student">
+                                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+                        <svg width="48" height="48" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="margin-bottom: 1rem; opacity: 0.5;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                        </svg>
+                        <p style="font-size: 1.1rem; font-weight: 700; color: var(--text-main);">No students found</p>
+                        <p style="font-size: 0.9rem;">Try adjusting your search terms or filter selections.</p>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}AI Advisor & Assistant - StudentHub{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="page-title-group">
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span style="font-size: 2rem; animation: pulse 2s infinite;">🤖</span>
+            <div>
+                <h1>StudentHub AI Agent</h1>
+                <p class="page-subtitle">Your intelligent academic data analyst, database query agent & advisor.</p>
+            </div>
+        </div>
+    </div>
+    <div class="header-actions">
+        <button class="btn btn-primary" onclick="toggleAIChat()">
+            ✨ Launch AI Agent Chat
+        </button>
+    </div>
+</div>
+
+<!-- AI Analytics & Capabilities Grid -->
+<div class="ai-assistant-grid">
+    <!-- Active Insights -->
+    <div class="card-section" style="margin-bottom: 0;">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span>⚡ Real-Time Database Audit</span>
+            </h2>
+            <span class="ai-pill-tag">Live Metrics</span>
+        </div>
+        <div class="ai-insights-grid" style="display: flex; flex-direction: column; gap: 1rem;">
+            {% for insight in insights %}
+            <div class="ai-insight-item ai-insight-{{ insight.type }}">
+                <span class="ai-insight-icon">{{ insight.icon }}</span>
+                <div class="ai-insight-content">
+                    <strong>{{ insight.title }}</strong>
+                    <p>{{ insight.text | safe }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Quick Actions & Suggested Prompt Agent Commands -->
+    <div class="card-section" style="margin-bottom: 0;">
+        <div class="section-header">
+            <h2 class="section-title">
+                <span>🎯 Quick AI Agent Commands</span>
+            </h2>
+        </div>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.25rem;">
+            Click any shortcut below to query the database using natural language:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <button class="ai-shortcut-btn" onclick="sendQuickPrompt('How many students are enrolled?')">
+                <span class="ai-shortcut-icon">📊</span>
+                <div class="ai-shortcut-text">
+                    <strong>Total Enrollment Summary</strong>
+                    <small>Calculate active vs inactive student statistics</small>
+                </div>
+            </button>
+
+            <button class="ai-shortcut-btn" onclick="sendQuickPrompt('Show inactive students')">
+                <span class="ai-shortcut-icon">⚠️</span>
+                <div class="ai-shortcut-text">
+                    <strong>At-Risk & Inactive Audit</strong>
+                    <small>List students requiring follow-up or status review</small>
+                </div>
+            </button>
+
+            <button class="ai-shortcut-btn" onclick="sendQuickPrompt('Which course is most popular?')">
+                <span class="ai-shortcut-icon">📚</span>
+                <div class="ai-shortcut-text">
+                    <strong>Course Popularity & Load</strong>
+                    <small>Analyze enrollment distribution per program</small>
+                </div>
+            </button>
+
+            <button class="ai-shortcut-btn" onclick="sendQuickPrompt('Who was recently added?')">
+                <span class="ai-shortcut-icon">🆕</span>
+                <div class="ai-shortcut-text">
+                    <strong>Recent Registrations</strong>
+                    <small>Show top 5 newly added student profiles</small>
+                </div>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Embedded Full Interactive Chat Container -->
+<div class="card-section">
+    <div class="section-header">
+        <h2 class="section-title">
+            <span>💬 Interactive AI Agent Workspace</span>
+        </h2>
+        <button class="btn btn-secondary btn-sm" onclick="clearAIChatHistory()">Clear Conversation</button>
+    </div>
+    
+    <div class="ai-embedded-chat-wrap">
+        <div class="ai-chat-messages" id="pageChatMessageContainer">
+            <div class="ai-message ai-message-agent">
+                <div class="ai-avatar">🤖</div>
+                <div class="ai-bubble">
+                    Hello! I am your <strong>StudentHub AI Agent</strong>. Ask me anything about student records, course enrollment, inactive status follow-ups, or search for a student!
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-chat-input-row">
+            <input type="text" id="pageChatInput" class="ai-chat-input" placeholder="Ask AI Agent a question (e.g. 'How many active students in Computer Science?')" onkeypress="handlePageChatKeyPress(event)">
+            <button class="btn btn-primary" onclick="sendPageChatMessage()">Send Prompt</button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
